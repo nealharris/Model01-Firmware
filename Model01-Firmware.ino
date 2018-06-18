@@ -73,7 +73,12 @@
 #include "Kaleidoscope-USB-Quirks.h"
 
 #include "Kaleidoscope-Macros.h"
+
+// Support for https://github.com/keyboardio/Kaleidoscope-OneShot
 #include "Kaleidoscope-OneShot.h"
+
+// Support for https://github.com/keyboardio/Kaleidoscope-LED-ActiveModColor
+#include "Kaleidoscope-LED-ActiveModColor.h"
 
 /** This 'enum' is a list of all the macros used by the Model 01's firmware
   * The names aren't particularly important. What is important is that each
@@ -496,7 +501,9 @@ KALEIDOSCOPE_INIT_PLUGINS(
   // by BIOSes) and Report (NKRO).
   USBQuirks,
 
-  OneShot
+  OneShot,
+
+  ActiveModColorEffect
 );
 
 /** The 'setup' function is one of the two standard Arduino sketch functions.
@@ -540,6 +547,8 @@ void setup() {
   // maps for. To make things simple, we set it to five layers, which is how
   // many editable layers we have (see above).
   ColormapEffect.max_layers(5);
+
+  ActiveModColorEffect.highlight_color = CRGB(0x00, 0xff, 0xff);
 }
 
 /** loop is the second of the standard Arduino sketch functions.
