@@ -65,8 +65,11 @@
 // Support for USB quirks, like changing the key state report protocol
 #include "Kaleidoscope-USB-Quirks.h"
 
+// Support for https://github.com/keyboardio/Kaleidoscope-OneShot
 #include "Kaleidoscope-OneShot.h"
 
+// Support for https://github.com/keyboardio/Kaleidoscope-LED-ActiveModColor
+#include "Kaleidoscope-LED-ActiveModColor.h"
 
 /** This 'enum' is a list of all the macros used by the Model 01's firmware
   * The names aren't particularly important. What is important is that each
@@ -461,6 +464,7 @@ KALEIDOSCOPE_INIT_PLUGINS(
   HostPowerManagement,
 
 <<<<<<< HEAD
+<<<<<<< HEAD
   // The MagicCombo plugin lets you use key combinations to trigger custom
   // actions - a bit like Macros, but triggered by pressing multiple keys at the
   // same time.
@@ -474,6 +478,11 @@ KALEIDOSCOPE_INIT_PLUGINS(
 =======
   OneShot
 >>>>>>> applies initial one-shot config
+=======
+  OneShot,
+
+  ActiveModColorEffect
+>>>>>>> initial one-shot config
 );
 
 /** The 'setup' function is one of the two standard Arduino sketch functions.
@@ -505,6 +514,8 @@ void setup() {
   // This avoids over-taxing devices that don't have a lot of power to share
   // with USB devices
   LEDOff.activate();
+
+  ActiveModColorEffect.highlight_color = CRGB(0x00, 0xff, 0xff);
 }
 
 /** loop is the second of the standard Arduino sketch functions.
