@@ -301,7 +301,7 @@ static void anyKeyMacro(uint8_t keyState) {
     kaleidoscope::hid::pressKey(lastKey);
 }
 
-void macroOneShotAltControl(uint8_t keyState) {
+static void macroOneShotAltControl(uint8_t keyState) {
   OneShot.inject(OSM(LeftAlt), keyState);
   OneShot.inject(OSM(LeftControl), keyState);
 }
