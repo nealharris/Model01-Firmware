@@ -71,6 +71,9 @@
 // Support for https://github.com/keyboardio/Kaleidoscope-LED-ActiveModColor
 #include "Kaleidoscope-LED-ActiveModColor.h"
 
+// Support for https://github.com/keyboardio/Kaleidoscope-MagicCombo
+#include "Kaleidoscope-MagicCombo.h"
+
 /** This 'enum' is a list of all the macros used by the Model 01's firmware
   * The names aren't particularly important. What is important is that each
   * is unique.
@@ -89,7 +92,22 @@ enum { MACRO_VERSION_INFO,
        OSMALTCTRL
      };
 
+/**
+  * The following is config to allow locking the screen by pressing both fn keys.
+  * It uses the MagicCombo plugin (https://github.com/keyboardio/Kaleidoscope-MagicCombo).
+  */
 
+enum { KIND_OF_MAGIC };
+
+void lockScreen(uint8_t keyState) {
+  Macros.play(MACRO(D(LeftControl), D(LeftGui), T(Q), U(LeftGui), U(LeftControl)));
+}
+
+USE_MAGIC_COMBOS(
+[KIND_OF_MAGIC] = {
+  .action = lockScreen,
+  .keys = {R3C6, R3C9} // Left Fn + Right Fn
+});
 
 /** The Model 01's key layouts are defined as 'keymaps'. By default, there are three
   * keymaps: The standard QWERTY keymap, the "Function layer" keymap and the "Numpad"
@@ -463,8 +481,6 @@ KALEIDOSCOPE_INIT_PLUGINS(
   // goes to sleep, and resume them when it wakes up.
   HostPowerManagement,
 
-<<<<<<< HEAD
-<<<<<<< HEAD
   // The MagicCombo plugin lets you use key combinations to trigger custom
   // actions - a bit like Macros, but triggered by pressing multiple keys at the
   // same time.
@@ -474,15 +490,11 @@ KALEIDOSCOPE_INIT_PLUGINS(
   // comfortable - or able - to do automatically, but can be useful
   // nevertheless. Such as toggling the key report protocol between Boot (used
   // by BIOSes) and Report (NKRO).
-  USBQuirks
-=======
-  OneShot
->>>>>>> applies initial one-shot config
-=======
+  USBQuirks,
+
   OneShot,
 
   ActiveModColorEffect
->>>>>>> initial one-shot config
 );
 
 /** The 'setup' function is one of the two standard Arduino sketch functions.
