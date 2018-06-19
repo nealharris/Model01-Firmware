@@ -311,12 +311,7 @@ static void versionInfoMacro(uint8_t keyState) {
  */
 
 static void anyKeyMacro(uint8_t keyState) {
-  static Key lastKey;
-  if (keyToggledOn(keyState))
-    lastKey.keyCode = Key_A.keyCode + (uint8_t)(millis() % 36);
-
-  if (keyIsPressed(keyState))
-    kaleidoscope::hid::pressKey(lastKey);
+  Macros.play(MACRO(D(LeftGui), D(LeftShift), T(4), U(LeftShift), U(LeftGui)));
 }
 
 static void macroOneShotAltControl(uint8_t keyState) {
