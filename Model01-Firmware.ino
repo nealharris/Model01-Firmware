@@ -71,9 +71,6 @@
 // Support for https://github.com/keyboardio/Kaleidoscope-LED-ActiveModColor
 #include "Kaleidoscope-LED-ActiveModColor.h"
 
-// Support for https://github.com/keyboardio/Kaleidoscope-MagicCombo
-#include "Kaleidoscope-MagicCombo.h"
-
 /** This 'enum' is a list of all the macros used by the Model 01's firmware
   * The names aren't particularly important. What is important is that each
   * is unique.
@@ -97,7 +94,10 @@ enum { MACRO_VERSION_INFO,
   * It uses the MagicCombo plugin (https://github.com/keyboardio/Kaleidoscope-MagicCombo).
   */
 
-enum { KIND_OF_MAGIC };
+enum { KIND_OF_MAGIC,
+       // Toggle between Boot (6-key rollover; for BIOSes and early boot) and NKRO mode.
+       COMBO_TOGGLE_NKRO_MODE
+     };
 
 void lockScreen(uint8_t keyState) {
   Macros.play(MACRO(D(LeftControl), D(LeftGui), T(Q), U(LeftGui), U(LeftControl)));
@@ -106,8 +106,16 @@ void lockScreen(uint8_t keyState) {
 USE_MAGIC_COMBOS(
 [KIND_OF_MAGIC] = {
   .action = lockScreen,
-  .keys = {R3C6, R3C9} // Left Fn + Right Fn
-});
+  // Left Fn + Right Rn
+  .keys = { R3C6, R3C9 },
+  },
+
+[COMBO_TOGGLE_NKRO_MODE] = {
+  .action = toggleKeyboardProtocol,
+  // Left Fn + Esc + Shift
+  .keys = { R3C6, R2C6, R3C7 }
+  }
+);
 
 /** The Model 01's key layouts are defined as 'keymaps'. By default, there are three
   * keymaps: The standard QWERTY keymap, the "Function layer" keymap and the "Numpad"
@@ -167,11 +175,10 @@ enum { PRIMARY, NUMPAD, FUNCTION }; // layers
   *
   */
 
-#define PRIMARY_KEYMAP_QWERTY
+// #define PRIMARY_KEYMAP_QWERTY
 // #define PRIMARY_KEYMAP_COLEMAK
 // #define PRIMARY_KEYMAP_DVORAK
-// #define PRIMARY_KEYMAP_CUSTOM
-
+#define PRIMARY_KEYMAP_CUSTOM
 
 
 /* This comment temporarily turns off astyle's indent enforcement
@@ -392,19 +399,6 @@ void hostPowerManagementEventHandler(kaleidoscope::HostPowerManagement::Event ev
   toggleLedsOnSuspendResume(event);
 }
 
-/** This 'enum' is a list of all the magic combos used by the Model 01's
- * firmware The names aren't particularly important. What is important is that
- * each is unique.
- *
- * These are the names of your magic combos. They will be used by the
- * `USE_MAGIC_COMBOS` call below.
- */
-enum {
-  // Toggle between Boot (6-key rollover; for BIOSes and early boot) and NKRO
-  // mode.
-  COMBO_TOGGLE_NKRO_MODE
-};
-
 /** A tiny wrapper, to be used by MagicCombo.
  * This simply toggles the keyboard protocol via USBQuirks, and wraps it within
  * a function with an unused argument, to match what MagicCombo expects.
@@ -416,10 +410,6 @@ static void toggleKeyboardProtocol(uint8_t combo_index) {
 /** Magic combo list, a list of key combo and action pairs the firmware should
  * recognise.
  */
-USE_MAGIC_COMBOS({.action = toggleKeyboardProtocol,
-                  // Left Fn + Esc + Shift
-                  .keys = { R3C6, R2C6, R3C7 }
-                 });
 
 // First, tell Kaleidoscope which plugins you want to use.
 // The order can be important. For example, LED effects are
